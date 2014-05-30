@@ -1,49 +1,39 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using Microsoft.ClearScript;
-using Microsoft.ClearScript.V8;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Less.Js.Net.Tests
 {
 	[TestClass]
 	public class LessJsBasicIntegrationTest
 	{
+		private Less _lessCompiler;
+
+		[TestInitialize]
+		public void Init()
+		{
+			_lessCompiler = new Less();
+		}
+
+
 		[TestMethod]
-		public void MultipleImports()
+		public void VariablesWork()
 		{
-			try
-			{
-				var engine = new V8ScriptEngine("lessJsEngine");
-				IncludeScript(engine, "lessIntegration.js");
-				IncludeScript(engine, "less-1.7.0.js");
-				string result = (string) engine.Evaluate("lessJsNet.lessIt('foo {width: calc(10% -10px)}')");
-				AssertAreEqualIgnoreWhitespace("foo {width: calc(10% -10px);}", result);
-			}
-			catch (ScriptEngineException e)
-			{
-				throw new Exception(e.ErrorDetails);
-			}
+			var less = @" @variable : 20px;
+						bar { width : @variable; }";
+			var expected = @"bar {width: 20px;}";
+
+			AssertLessCompilationCorrect(less, expected);
 		}
 
-		private static void IncludeScript(V8ScriptEngine engine, string scriptName)
+		[TestMethod]
+		public void StrictMathIsUsedByDefault()
 		{
-			string script = File.ReadAllText(scriptName, Encoding.UTF8);
-			engine.Execute(scriptName, script);
+			AssertLessCompilationCorrect("foo {width: calc(10% -10px)}", "foo {width: calc(10% -10px);}");
 		}
 
-		private void AssertAreEqualIgnoreWhitespace(string expected, string actual)
+		private void AssertLessCompilationCorrect(string lessInput, string expectedResult)
 		{
-			Assert.AreEqual(StripWhitespace(expected), StripWhitespace(actual));
-		}
-
-		private string StripWhitespace(string str)
-		{
-			return str
-				.Replace(" ", "")
-				.Replace("\n", "")
-				.Replace("\t", "");
+			var result = _lessCompiler.Compile(lessInput);
+			AssertUtil.AreEqualIgnoreWhitespace(expectedResult, result);
 		}
 
 	}

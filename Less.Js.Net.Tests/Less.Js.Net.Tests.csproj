@@ -53,9 +53,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AssertUtil.cs" />
     <Compile Include="ClearScriptIntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LessJsBasicIntegrationTest.cs" />
+    <Compile Include="CompilationBenchmark.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Licenses\ClearScript.main.license" />
@@ -73,6 +75,12 @@
       <Project>{331033d5-a9a7-4d26-9a2c-2dc534a44fad}</Project>
       <Name>Less.Js.Net</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="testFiles\benchmark.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="testFiles\benchmark_result.css" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

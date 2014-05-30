@@ -3,7 +3,7 @@
   <Description>These are default test settings for a local test run.</Description>
   <Deployment>
     <DeploymentItem filename="packages\ClearScript.V8.5.3.10.0\tools\native\amd64\" />
-    <DeploymentItem filename="Less.Js.Net\javascript\" />
+    <DeploymentItem filename="Less.Js.Net.Tests\testFiles\" />
     <DeploymentItem filename="packages\ClearScript.V8.5.3.10.0\tools\native\x86\" />
   </Deployment>
   <Execution>
